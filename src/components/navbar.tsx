@@ -16,7 +16,7 @@ function Navbar() {
 function NavbarwithoutProvider() {
     const session = useSession()
     return (
-        <div className="flex justify-between px-5 py-5 bg-[#15151a]">
+        <div className="flex justify-between px-5 py-5 bg-[#000] border-b-[1px] border-[#202020]">
             <div className="text-lg flex gap-3">
                 <h1>Project Management</h1> 
             </div>

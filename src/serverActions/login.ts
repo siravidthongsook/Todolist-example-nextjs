@@ -7,8 +7,7 @@ export async function processLogin(formdata: FormData) {
         await signIn("credentials", {redirect: false, username: formdata.get("username"), password: formdata.get("password")})
         return 1
     }
-    catch(e) {
-        
+    catch {
         return 0
     }
 }

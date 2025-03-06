@@ -1,23 +1,33 @@
+"use client"
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
 import { Checkbox } from "./checkbox"
 
-function Card({ className, children, ...props }: React.ComponentProps<"div">) {
+const cardContext = React.createContext<boolean>(false)
+
+function Card({ className, children, defaultChecked, ...props }: React.ComponentProps<"div">) {
+    const [isChecked, setIsChecked] = React.useState(defaultChecked ?? false)
+    function Click() {
+        setIsChecked((prev) => !prev)
+    }
   return (
+      <cardContext.Provider value={isChecked}>
     <div
       data-slot="card"
       className={cn(
-        "bg-[#f4f4f4] text-black flex flex-row gap-2 rounded-xl border py-6 shadow-sm items-center",
+        "rounded-xl border border-[#202020] bg-[#111] text-white shadow min-h-[6rem] flex items-center",
         className
       )}
+      onClick={Click}
       {...props}
     >
-        <Checkbox className="ml-7 p-1 box-content"/>
+        <Checkbox className="ml-7 p-1 box-content" checked={isChecked}/>
         <div className="flex flex-col">
             {children}
         </div>
     </div>
+    </cardContext.Provider>
   )
 }
 
@@ -32,20 +42,22 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
+    const isCheck = React.useContext(cardContext)
   return (
     <div
       data-slot="card-title"
-      className={cn("leading-none", className)}
+      className={cn("leading-none",{"line-through": isCheck}, className)}
       {...props}
     />
   )
 }
 
 function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
+    const isCheck = React.useContext(cardContext)
   return (
     <div
       data-slot="card-description"
-      className={cn("text-muted-foreground text-sm", className)}
+        className={cn("text-muted-foreground text-sm", {"line-through": isCheck} , className)}
       {...props}
     />
   )
